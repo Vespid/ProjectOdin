@@ -13,35 +13,56 @@
 	</style>
 </head>
 <body>
-	<div class="grid-container">
-		
-	</div>
+	<button id="reset">Reset</button>
+	<div class="grid-container"></div>
 </body>
 <script type="text/javascript">
 	function createGrid(gridSize){
-		const divSize="30px";
+		if (gridSize>25) gridSize=25;
+		const divSize=Math.round(460/gridSize)+"px";
 		const container = document.querySelector(".grid-container");
 		for (x=0; x<gridSize*gridSize;x++){
 			let square = document.createElement("div");
-			square.setAttribute("style","background:orange");
-			//need way to set dynamic width & height
+			square.style.backgroundColor="orange";
+			square.style.width=divSize;
+			square.style.height=divSize;
 			square.setAttribute("id",`box${x}`);
 			square.classList.add("grid-item");
 			container.appendChild(square);
 		}
 		let columnCSS=` ${divSize}`.repeat(gridSize);
 		container.setAttribute("style",`grid-template-columns:${columnCSS}`);
+		var grid=document.querySelectorAll(".grid-item");
+		grid.forEach(grid => grid.addEventListener("mouseenter",changeColor));
 	}
-	createGrid(16);
-
+	
 	function changeColor(e){
 		let gridID=e.target.id;
 		const gridNum=document.querySelector(`#${gridID}`);
-		gridNum.setAttribute("style","background:yellow");
+		gridNum.style.backgroundColor="yellow";
+		//doesn't work after reset
 		}
 
-	var grid=document.querySelectorAll(".grid-item");
-	grid.forEach(grid => grid.addEventListener("mouseenter",changeColor));
+	function resetGrid(e){
+		console.log(e);
+		gridSize=prompt("Enter grid size");
+		removeGrid();
+		createGrid(gridSize);
+
+	}
+
+	function removeGrid(){
+		const container = document.querySelector(".grid-container");
+		let square=document.querySelectorAll(".grid-item");
+		square.forEach(square => container.removeChild(square));
+	}
+
+	createGrid(16);
+	//var grid=document.querySelectorAll(".grid-item");
+	//grid.forEach(grid => grid.addEventListener("mouseenter",changeColor));
+
+	var resetBtn=document.querySelector("#reset");
+	resetBtn.addEventListener("click",resetGrid);
 
 </script>
 </html>
