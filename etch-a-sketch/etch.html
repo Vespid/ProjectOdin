@@ -4,8 +4,11 @@
 	<style type="text/css">
 		.grid-container {
 			display: grid;
-			grid-gap:5px;
-			grid-template-columns: 30px 30px 30px 30px 30px 30px 30px 30px 30px 30px 30px 30px 30px 30px 30px 30px;
+			grid-gap:3px;
+		}
+		.grid-item{
+			width: 30px;
+			height: 30px;
 		}
 	</style>
 </head>
@@ -15,12 +18,30 @@
 	</div>
 </body>
 <script type="text/javascript">
-	const container = document.querySelector(".grid-container");
-	for (x=0; x<16*16;x++){
-		let square = document.createElement("div");
-		square.setAttribute("style","background:orange; width:30px; height:30px");
-		square.classList.add("grid-item");
-		container.appendChild(square);
+	function createGrid(gridSize){
+		const divSize="30px";
+		const container = document.querySelector(".grid-container");
+		for (x=0; x<gridSize*gridSize;x++){
+			let square = document.createElement("div");
+			square.setAttribute("style","background:orange");
+			//need way to set dynamic width & height
+			square.setAttribute("id",`box${x}`);
+			square.classList.add("grid-item");
+			container.appendChild(square);
+		}
+		let columnCSS=` ${divSize}`.repeat(gridSize);
+		container.setAttribute("style",`grid-template-columns:${columnCSS}`);
 	}
+	createGrid(16);
+
+	function changeColor(e){
+		let gridID=e.target.id;
+		const gridNum=document.querySelector(`#${gridID}`);
+		gridNum.setAttribute("style","background:yellow");
+		}
+
+	var grid=document.querySelectorAll(".grid-item");
+	grid.forEach(grid => grid.addEventListener("mouseenter",changeColor));
+
 </script>
 </html>
