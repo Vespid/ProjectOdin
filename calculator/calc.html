@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+		</style> 
+	</head>
+	<body>
+		<div><form>
+			<input type="text" id="display" value="" readonly>
+		</form></div>
+		<div id="num-buttons"></div>
+		<div id="operators">
+			<button id="clear">C</button>
+			<button id="add">+</button>
+			<button id="subtract">-</button>
+			<button id="multiply">x</button>
+			<button id="divide">/</button>
+			<button id="equal">=</button>
+		</div>
+	</body>
+	<script>
+		function add(x,y){
+			return x+y;
+		}
+		function subtract(x,y){
+			return x-y;
+		}
+		function multiply(x,y){
+			return x*y;
+		}
+		function divide(x,y){
+			return x/y;
+		}
+		function operate(opr,x,y){
+			switch(opr){
+				case "add":
+					return add(x,y);
+					break;
+				case "subtract":
+					return subtract(x,y);
+					break;
+				case "multiply":
+					return multiply(x,y);
+					break;
+				case "divide":
+					return divide(x,y);
+					break;
+			}
+		}
+		function createNumButtons(){
+			const container = document.querySelector('#num-buttons');
+			for (var k=0; k<10; k++){
+				const numButton = document.createElement('button');
+				numButton.textContent=k;
+				numButton.id=k;
+				container.appendChild(numButton);
+			}
+		}
+		function inputNum(e){
+			var inputText=e.target.textContent;
+			const container = document.querySelector('#display');
+			switch (inputText){
+				case "+":
+					storedNum=Number(container.value);
+					operator="add"; //try to make it work without using a global variable
+					container.value="";
+					break;
+				case "-":
+					storedNum=Number(container.value);
+					operator="subtract"; //try to make it work without using a global variable
+					container.value="";
+					break;
+				case "x":
+					storedNum=Number(container.value);
+					operator="multiply"; //try to make it work without using a global variable
+					container.value="";
+					break;
+				case "/":
+					storedNum=Number(container.value);
+					operator="divide"; //try to make it work without using a global variable
+					container.value="";
+					break;
+				case "=":
+					console.log(storedNum,Number(container.value),operator);
+					container.value=operate(operator,storedNum,Number(container.value));
+					break;
+				case "C":
+					container.value="";
+					break;	
+				default:
+					container.value+=inputText;
+					break;
+			}
+		}
+
+		createNumButtons();
+	
+		const buttonPress = document.querySelectorAll("button");
+		buttonPress.forEach(buttonPress => buttonPress.addEventListener("click",inputNum));
+
+
+
+
+
+
+	</script>
+</html>
