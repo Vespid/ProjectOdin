@@ -8,14 +8,18 @@
 		<div><form>
 			<input type="text" id="display" value="" readonly>
 		</form></div>
-		<div id="num-buttons"></div>
-		<div id="operators">
-			<button id="clear">C</button>
+		<div class="num-buttons"></div>
+		<div class="operators">
 			<button id="add">+</button>
 			<button id="subtract">-</button>
 			<button id="multiply">x</button>
 			<button id="divide">/</button>
 			<button id="equal">=</button>
+		</div>
+		<div class="clear">
+			<button id="clear">C</button>
+			<button id="backspace">◄</button>
+			<button id="decimal">.</button>
 		</div>
 	</body>
 	<script>
@@ -48,7 +52,7 @@
 			}
 		}
 		function createNumButtons(){
-			const container = document.querySelector('#num-buttons');
+			const container = document.querySelector('.num-buttons');
 			for (var k=0; k<10; k++){
 				const numButton = document.createElement('button');
 				numButton.textContent=k;
@@ -81,12 +85,17 @@
 					container.value="";
 					break;
 				case "=":
-					console.log(storedNum,Number(container.value),operator);
 					container.value=operate(operator,storedNum,Number(container.value));
 					break;
 				case "C":
 					container.value="";
-					break;	
+					break;
+				case "◄":
+					container.value=container.value.slice(0,-1);
+					break;
+				case ".":
+					if (container.value.indexOf(".")==-1) container.value+=".";
+					break;
 				default:
 					container.value+=inputText;
 					break;
