@@ -85,7 +85,8 @@
 					container.value="";
 					break;
 				case "=":
-					container.value=operate(operator,storedNum,Number(container.value));
+					if (operator==="divide" && container.value=="0") container.value="Divide by zero error";
+					else container.value=operate(operator,storedNum,Number(container.value));
 					break;
 				case "C":
 					container.value="";
@@ -94,7 +95,7 @@
 					container.value=container.value.slice(0,-1);
 					break;
 				case ".":
-					if (container.value.indexOf(".")==-1) container.value+=".";
+					if (container.value.indexOf(".")===-1) container.value+=".";
 					break;
 				default:
 					container.value+=inputText;
