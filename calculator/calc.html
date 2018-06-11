@@ -60,8 +60,7 @@
 				container.appendChild(numButton);
 			}
 		}
-		function inputNum(e){
-			var inputText=e.target.textContent;
+		function parseInput(inputText){
 			const container = document.querySelector('#display');
 			switch (inputText){
 				case "+":
@@ -84,13 +83,15 @@
 					operator="divide"; //try to make it work without using a global variable
 					container.value="";
 					break;
+				case "Enter":
 				case "=":
-					if (operator==="divide" && container.value=="0") container.value="Divide by zero error";
+					if (operator==="divide" && container.value==="0") container.value="Divide by zero error";
 					else container.value=operate(operator,storedNum,Number(container.value));
 					break;
 				case "C":
 					container.value="";
 					break;
+				case "Backspace":
 				case "◄":
 					container.value=container.value.slice(0,-1);
 					break;
@@ -102,12 +103,20 @@
 					break;
 			}
 		}
-
+		function clickButton(e){
+			var inputText=e.target.textContent;
+			parseInput(inputText);
+		}
+		function testFunction(e){
+			var inputText=e.key;
+			var validInputs=["0","1","2","3","4","5","6","7","8","9","Enter","Backspace","C"];
+			if (validInputs.indexOf(inputText)>-1) parseInput(inputText);
+		}
 		createNumButtons();
 	
 		const buttonPress = document.querySelectorAll("button");
-		buttonPress.forEach(buttonPress => buttonPress.addEventListener("click",inputNum));
-
+		buttonPress.forEach(buttonPress => buttonPress.addEventListener("click",clickButton));
+		window.addEventListener('keydown',testFunction)
 
 
 
