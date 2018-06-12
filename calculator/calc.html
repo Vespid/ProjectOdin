@@ -73,6 +73,7 @@
 					operator="subtract"; //try to make it work without using a global variable
 					container.value="";
 					break;
+				case "*":
 				case "x":
 					storedNum=Number(container.value);
 					operator="multiply"; //try to make it work without using a global variable
@@ -87,6 +88,7 @@
 				case "=":
 					if (operator==="divide" && container.value==="0") container.value="Divide by zero error";
 					else container.value=operate(operator,storedNum,Number(container.value));
+					console.log(container.value);
 					break;
 				case "C":
 					container.value="";
@@ -103,24 +105,20 @@
 					break;
 			}
 		}
-		function clickButton(e){
+		function clickInput(e){
 			var inputText=e.target.textContent;
 			parseInput(inputText);
 		}
-		function testFunction(e){
+		function keyboardInput(e){
 			var inputText=e.key;
-			var validInputs=["0","1","2","3","4","5","6","7","8","9","Enter","Backspace","C"];
+			var validInputs=["0","1","2","3","4","5","6","7","8","9","Enter","Backspace","C","+","-","x","*","/"];
 			if (validInputs.indexOf(inputText)>-1) parseInput(inputText);
 		}
 		createNumButtons();
 	
 		const buttonPress = document.querySelectorAll("button");
-		buttonPress.forEach(buttonPress => buttonPress.addEventListener("click",clickButton));
-		window.addEventListener('keydown',testFunction)
-
-
-
-
+		buttonPress.forEach(buttonPress => buttonPress.addEventListener("click",clickInput));
+		window.addEventListener('keydown',keyboardInput)
 
 	</script>
 </html>
