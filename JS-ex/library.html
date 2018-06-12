@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <table id="bookList">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Pages</th>
+                <th>Read</th>
+            </tr>
+            <tr></tr>
+        </table>
+        <button id="addBook">Add a book</button>
+        <div>
+            <form id="addFields" style="display: none;">
+                Title: <input type="text" name="title">
+                Author: <input type="text" name="author"><br>
+                Pages: <input type="text" name="pages">
+                Read: Yes<input type="radio" name="read" value=true>
+                | No<input type="radio" name="read" value=false><br>
+                <!--<input type="submit" value="submit">-->
+                <button type="button" id="submit">Submit</button>
+            </form>
+        </div>
+        
+    </body>
+    <script>
+        function Book(title,author,pages,read){
+            this.title= title;
+            this.author= author;
+            this.pages= pages;
+            this.read= read;
+            this.info = function(){
+                //return (title,author,pages,read);
+                return title + " by " + author + ", " + pages + " pages";
+            }
+        }
+
+        function addBooktoLibrary(bookObj){
+            //function
+            myLibrary.push(bookObj);
+        }
+        
+        function render(){
+            for (var k=0; k<myLibrary.length; k++){
+                addRow(myLibrary[k]);
+            }
+        }
+
+        function show_hide(){
+            var addFields = document.getElementById("addFields");
+            if (addFields.style.display==="none") addFields.style.display="block";
+            else addFields.style.display="none";
+        }
+        
+        function submitBook(){
+            var container=document.querySelector("#addFields");
+            var title=container.title.value;
+            var author=container.author.value;
+            var pages=container.pages.value;
+            var read=container.read.value;
+            var newBook= new Book(title,author,pages,read);
+            addBooktoLibrary(newBook);
+            addRow(newBook);
+            container.title.value="";container.author.value="";container.pages.value="";
+        }
+
+        function addRow(bookObj){
+            const container=document.querySelector("#bookList");
+            var container2=document.createElement("tr");
+            const listLen=document.querySelectorAll("tr").length-2;  //workaround to start index from zero
+            container2.id="book-"+listLen;
+            container.appendChild(container2);
+            var content=document.createElement("td");
+            content.textContent=bookObj.title;
+            container2.appendChild(content);
+            content=document.createElement("td");
+            content.textContent=bookObj.author;
+            container2.appendChild(content);
+            content=document.createElement("td");
+            content.textContent=bookObj.pages;
+            container2.appendChild(content);
+            content=document.createElement("td");
+            content.textContent=bookObj.read;
+            container2.appendChild(content);
+        }
+
+        let myLibrary=[];
+        let book1 = new Book("The","Vincent Mak",420,false);
+        let book2 = new Book("The II","Vincent Mak",69,false);
+        addBooktoLibrary(book1);
+        addBooktoLibrary(book2);
+        render();
+
+        const addButton=document.querySelector("#addBook");
+        addButton.addEventListener("click",show_hide);
+
+        const submitButton=document.querySelector("#submit");
+        submitButton.addEventListener("click",submitBook);
+
+    </script>
+</html>
