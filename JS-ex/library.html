@@ -68,7 +68,8 @@
         function addRow(bookObj){
             const container=document.querySelector("#bookList");
             var container2=document.createElement("tr");
-            const listLen=document.querySelectorAll("tr").length-2;  //workaround to start index from zero
+            container2.classList.add("bookRow")
+            const listLen=document.querySelectorAll(".bookRow").length;
             container2.id="book-"+listLen;
             container.appendChild(container2);
             var content=document.createElement("td");
@@ -81,15 +82,60 @@
             content.textContent=bookObj.pages;
             container2.appendChild(content);
             content=document.createElement("td");
-            content.textContent=bookObj.read;
+            var readButton=document.createElement("button")
+            readButton.classList.add("readButton");
+            readButton.id="read-"+listLen;
+            readButton.textContent=bookObj.read;
             container2.appendChild(content);
+            content.appendChild(readButton);
+        }
+
+        function deleteRows(){
+            //const container = document.querySelectorAll(".bookRow"); doesn't work for some reason
+            var container = document.getElementsByClassName("bookRow");
+            while(container.length>0){
+                container[0].parentNode.removeChild(container[0]);
+            }
+        }
+
+        function deleteRow(row){
+            var container = document.getElementById("book-"+row);
+            container.parentNode.removeChild(container);
+        }
+
+        function changeRead(index){
+            switch (myLibrary[index].read){
+                case true:
+                    myLibrary[index].read="false";
+                    break;
+                case false:
+                    myLibrary[index].read="true";
+                    break;
+            }
+        }
+
+
+        function toggleRead(e){
+            //maybe better to delete all rows and re-render after each change?
+            indexNum=e.target.id.substr(5);
+            changeRead(indexNum);
+            switch (e.target.textContent){
+                case "true":
+                    e.target.textContent="false";
+                    break;
+                case "false":
+                    e.target.textContent="true";
+                    break;
+            }
         }
 
         let myLibrary=[];
         let book1 = new Book("The","Vincent Mak",420,false);
         let book2 = new Book("The II","Vincent Mak",69,false);
+        let book3 = new Book("The III","Vincent Mak",6969,false);
         addBooktoLibrary(book1);
         addBooktoLibrary(book2);
+        addBooktoLibrary(book3);
         render();
 
         const addButton=document.querySelector("#addBook");
@@ -98,5 +144,7 @@
         const submitButton=document.querySelector("#submit");
         submitButton.addEventListener("click",submitBook);
 
+        const readButton=document.querySelectorAll(".readButton");
+        readButton.forEach(key => key.addEventListener("click",toggleRead));
     </script>
 </html>
