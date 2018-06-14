@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            button{
+                width: 50px;
+                height: 50px;
+            }
+        </style>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td><button id="b-0"></button></td>
+                <td><button id="b-1"></button></td>
+                <td><button id="b-2"></button></td>
+            </tr>
+            <tr>
+                <td><button id="b-3"></button></td>
+                <td><button id="b-4"></button></td>
+                <td><button id="b-5"></button></td>
+            </tr>
+            <tr>
+                <td><button id="b-6"></button></td>
+                <td><button id="b-7"></button></td>
+                <td><button id="b-8"></button></td>
+            </tr>
+        </table>
+    </body>
+    <script>
+        //Board object
+        const gameboard =(() =>{
+            const board=["","","","","","","","",""];
+            const clear = (board) => board=["","","","","","","","",""];
+            const reset = () => {
+                //doesn't work because player is in different scope
+                clear(board);
+                var p1=player("Player 1","x");
+                var p2=player("Player 2","o");
+                displayController.gameEnd=false;
+            }
+            return {clear,board,reset};
+        })();
+
+        const player = (name,mark) =>{
+            if (mark=="x") var turn=true;
+            else turn=false;
+            return {name,mark,turn};
+        }
+        
+        const displayController=(() => {
+            const gameEnd=false;
+            const move = (p,position) =>{
+                if (gameboard.board[position]==="" && p.turn===true){
+                    gameboard.board[position]=p.mark;
+                    p1.turn=!p1.turn;
+                    p2.turn=!p2.turn;
+                }
+            };
+            const record = (e) =>{
+                //create better way of displaying mark
+                if (!displayController.gameEnd){
+                    var pos=e.target.id.substr(2);
+                    if (p1.turn&&e.target.innerText===""){
+                        displayController.move(p1,pos);
+                        e.target.innerText=p1.mark;
+                    } 
+                    else if (p2.turn&&e.target.innerText===""){
+                        displayController.move(p2,pos);
+                        e.target.innerText=p2.mark;
+                    }
+                    checkWin();
+            }
+                };
+            const checkWin = (board) =>{
+                var test=["012","036","048","147","258","345","678","246"];
+                for (var k=0;k<test.length;k++){
+                    if (gameboard.board[test[k][0]] === gameboard.board[test[k][1]] && 
+                    gameboard.board[test[k][2]] === gameboard.board[test[k][0]] &&
+                    gameboard.board[test[k][0]]!=""){
+                        console.log("win!");
+                        displayController.gameEnd=true;
+                    }
+                    else if (gameboard.board.indexOf("")===-1){
+                        console.log("draw");
+                        displayController.gameEnd=true;
+                    }
+                }
+            };
+                return {move,record,checkWin};
+        })();
+
+
+        var p1=player("Player 1","x");
+        var p2=player("Player 2","o");
+        const button = document.querySelectorAll("button");
+        button.forEach(key => key.addEventListener("click",displayController.record));
+
+
+
+
+
+
+
+
+    </script>
+</html></html>
