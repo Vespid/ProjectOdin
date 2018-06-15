@@ -29,11 +29,12 @@
                 <td><button class="reset">Reset</button></td>
             </tr>
         </table>
+        <div id="turn-display"></div>
         <div id="status-display"></div>
         <div id="inputs">
             <form>
-                <input type="text" name="p1" value="Player 1" class="name" id="p1" onkeypress="displayController.getName()">
-                <input type="text" name="p2" value="Player 2" class="name" id="p2" onkeypress="displayController.getName()">
+                X:<input type="text" name="p1" value="Player 1" class="name" id="p1" onkeypress="displayController.getName()"><br>
+                O:<input type="text" name="p2" value="Player 2" class="name" id="p2" onkeypress="displayController.getName()">
             </form>
         </div>
     </body>
@@ -80,14 +81,17 @@
                 //create better way of displaying mark
                 if (!displayController.gameEnd){
                     var pos=e.target.id.substr(2);
+                    var turnDispElem=document.getElementById("turn-display");
                     if (p1.turn&&e.target.innerText===""){
                         displayController.move(p1,pos);
                         e.target.innerText=p1.mark;
+                        turnDispElem.innerText=p2.mark+": "+p2.name+"'s turn "
                         checkWin(p1);
                     } 
                     else if (p2.turn&&e.target.innerText===""){
                         displayController.move(p2,pos);
                         e.target.innerText=p2.mark;
+                        turnDispElem.innerText=p1.mark+": "+p1.name+"'s turn "
                         checkWin(p2);
                     }
                 }
@@ -108,6 +112,8 @@
                 }
             };
             const endGame = (player) => {
+                var turnDispElem=document.getElementById("turn-display");
+                turnDispElem.innerText="";
                 if (player !== null) {
                     console.log(player.name + " wins!");
                     gameboard.textDisplay.innerText=player.name + " wins!";
